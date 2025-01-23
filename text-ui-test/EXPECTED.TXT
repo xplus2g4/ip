@@ -70,5 +70,17 @@
   Now you have 7 tasks in the list.
   ------------------------------------
   ------------------------------------
-Bye. Hope to see you again soon!
+  Oh No!!! Invalid todo format. Use 'todo <description>'
+  ------------------------------------
+  ------------------------------------
+  Oh No!!! Invalid event format. Use 'event <description> /from <start time> /to <end time>'
+  ------------------------------------
+  ------------------------------------
+  Oh No!!! Invalid deadline format. Use 'deadline <description> /by <deadline>'
+  ------------------------------------
+  ------------------------------------
+  Oh No!!! I'm sorry, but I don't know what that means :-(
+  ------------------------------------
+  ------------------------------------
+  Bye. Hope to see you again soon!
   ------------------------------------

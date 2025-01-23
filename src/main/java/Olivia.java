@@ -43,7 +43,7 @@ public class Olivia {
             }
         } while (true);
         sc.close();
-        printConsoleMessage("Bye. Hope to see you again soon!");
+        printConsoleMessage("  Bye. Hope to see you again soon!");
     }
 
     private static void printConsoleMessage(String message) {

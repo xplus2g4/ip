@@ -10,4 +10,8 @@ todo borrow book
 list
 deadline return book /by Sunday
 event project meeting /from Mon 2pm /to 4pm
+todo
+event invalid event
+deadline invalid deadline
+invalid command
 bye
