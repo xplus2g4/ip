@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Olivia {
@@ -17,8 +19,14 @@ public class Olivia {
 
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
+        List<String> items = new ArrayList<>();
         while (!input.equals("bye")) {
-            printConsoleMessage(input);
+            if (input.equals("list")) {
+                printConsoleMessage(listItems(items));
+            } else {
+                items.add(input);
+                printConsoleMessage("added: " + input);
+            }
             input = sc.nextLine();
         }
         sc.close();
@@ -29,5 +37,14 @@ public class Olivia {
         System.out.println("  ------------------------------------");
         System.out.println("  " + message);
         System.out.println("  ------------------------------------");
+    }
+
+    public static String listItems(List<String> items) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < items.size(); i++) {
+            sb.append("  " + (i + 1) + ". " + items.get(i) + "\n");
+        }
+        sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
     }
 }
