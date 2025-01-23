@@ -24,21 +24,28 @@ public class Olivia {
         List<Task> items = new ArrayList<>();
         String input;
 
-        do {
+        loop: do {
             try {
                 input = sc.nextLine();
-                if (input.equals("bye")) {
-                    break;
-                } else if (input.equals("list")) {
-                    commandListItems(items);
-                } else if (input.startsWith("mark")) {
-                    commandMarkItem(items, input);
-                } else if (input.startsWith("unmark")) {
-                    commandUnmarkItem(items, input);
-                } else if (input.startsWith("delete")) {
-                    commandDeleteItem(items, input);
-                } else {
-                    commandAddItem(items, input);
+                Command command = Command.fromString(input);
+                switch (command) {
+                    case BYE:
+                        break loop;
+                    case LIST:
+                        commandListItems(items);
+                        break;
+                    case MARK:
+                        commandMarkItem(items, input);
+                        break;
+                    case UNMARK:
+                        commandUnmarkItem(items, input);
+                        break;
+                    case DELETE:
+                        commandDeleteItem(items, input);
+                        break;
+                    case ADD:
+                        commandAddItem(items, input);
+                        break;
                 }
             } catch (OliviaException e) {
                 printConsoleMessage("  " + e.getMessage());
