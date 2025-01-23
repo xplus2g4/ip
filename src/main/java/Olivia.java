@@ -21,20 +21,27 @@ public class Olivia {
         System.out.println("  ------------------------------------");
 
         Scanner sc = new Scanner(System.in);
-        String input = sc.nextLine();
         List<Task> items = new ArrayList<>();
-        while (!input.equals("bye")) {
-            if (input.equals("list")) {
-                commandListItems(items);
-            } else if (input.startsWith("mark")) {
-                commandMarkItem(items, input);
-            } else if (input.startsWith("unmark")) {
-                commandUnmarkItem(items, input);
-            } else {
-                commandAddItem(items, input);
+        String input;
+
+        do {
+            try {
+                input = sc.nextLine();
+                if (input.equals("bye")) {
+                    break;
+                } else if (input.equals("list")) {
+                    commandListItems(items);
+                } else if (input.startsWith("mark")) {
+                    commandMarkItem(items, input);
+                } else if (input.startsWith("unmark")) {
+                    commandUnmarkItem(items, input);
+                } else {
+                    commandAddItem(items, input);
+                }
+            } catch (OliviaException e) {
+                printConsoleMessage("  " + e.getMessage());
             }
-            input = sc.nextLine();
-        }
+        } while (true);
         sc.close();
         printConsoleMessage("Bye. Hope to see you again soon!");
     }
@@ -61,25 +68,26 @@ public class Olivia {
         printConsoleMessage(getMarkedString(items.get(index)));
     }
 
-    public static void commandAddItem(List<Task> items, String input) {
-        Optional<? extends Task> task = Todo.isTodo(input);
+    public static void commandAddItem(List<Task> items, String input) throws OliviaException {
         StringBuilder sb = new StringBuilder();
-        if (task.isPresent()) {
-            items.add(task.get());
-        } else if ((task = Deadline.isDeadline(input)).isPresent()) {
-            items.add(task.get());
-        } else if ((task = Event.isEvent(input)).isPresent()) {
-            items.add(task.get());
-        } else {
-            // TODO: Handle invalid input
-            printConsoleMessage("  Invalid input");
-            return;
+        try {
+            Optional<? extends Task> task = Todo.isTodo(input);
+            if (task.isPresent()) {
+                items.add(task.get());
+            } else if ((task = Deadline.isDeadline(input)).isPresent()) {
+                items.add(task.get());
+            } else if ((task = Event.isEvent(input)).isPresent()) {
+                items.add(task.get());
+            } else {
+                throw new IllegalArgumentException("I'm sorry, but I don't know what that means :-(");
+            }
+            sb.append("  Got it. I've added this task:\n");
+            sb.append("    " + task.get().toString() + "\n");
+            sb.append("  Now you have " + items.size() + " tasks in the list.");
+            printConsoleMessage(sb.toString());
+        } catch (IllegalArgumentException e) {
+            throw new OliviaException(e.getMessage());
         }
-
-        sb.append("  Got it. I've added this task:\n");
-        sb.append("    " + task.get().toString() + "\n");
-        sb.append("  Now you have " + items.size() + " tasks in the list.");
-        printConsoleMessage(sb.toString());
     }
 
 

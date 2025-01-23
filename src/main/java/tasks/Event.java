@@ -9,12 +9,15 @@ public class Event extends Task {
     private String endTime;
 
     public static Optional<Event> isEvent(String input) {
+        if (!input.startsWith("event")) {
+            return Optional.empty();
+        }
         Pattern pattern = Pattern.compile("event (.+) /from (.+) /to (.+)");
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
             return Optional.of(new Event(matcher.group(1), matcher.group(2), matcher.group(3)));
         }
-        return Optional.empty();
+        throw new IllegalArgumentException("Invalid event format. Use 'event <description> /from <start time> /to <end time>'");
     }
 
     public Event(String description, String startTime, String endTime) {

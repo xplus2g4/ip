@@ -6,12 +6,16 @@ import java.util.regex.Pattern;
 
 public class Todo extends Task {
     public static Optional<Todo> isTodo (String input) {
+        if (!input.startsWith("todo")) {
+            return Optional.empty();
+        }
+
         Pattern pattern = Pattern.compile("todo (.+)");
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
             return Optional.of(new Todo(matcher.group(1)));
         }
-        return Optional.empty();
+        throw new IllegalArgumentException("Invalid todo format. Use 'todo <description>'");
     }
 
     public Todo(String description) {

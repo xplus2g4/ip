@@ -8,12 +8,15 @@ public class Deadline extends Task {
     private String deadline;
 
     public static Optional<Task> isDeadline(String input) {
+        if (!input.startsWith("deadline")) {
+            return Optional.empty();
+        }
         Pattern pattern = Pattern.compile("deadline (.+) /by (.+)");
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
             return Optional.of(new Deadline(matcher.group(1), matcher.group(2)));
         }
-        return Optional.empty();
+        throw new IllegalArgumentException("Invalid deadline format. Use 'deadline <description> /by <deadline>'");
     }
 
     public Deadline(String description, String deadline) {
