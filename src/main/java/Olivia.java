@@ -35,6 +35,8 @@ public class Olivia {
                     commandMarkItem(items, input);
                 } else if (input.startsWith("unmark")) {
                     commandUnmarkItem(items, input);
+                } else if (input.startsWith("delete")) {
+                    commandDeleteItem(items, input);
                 } else {
                     commandAddItem(items, input);
                 }
@@ -66,6 +68,16 @@ public class Olivia {
         int index = Integer.parseInt(input.substring(7)) - 1;
         items.get(index).markAsUndone();
         printConsoleMessage(getMarkedString(items.get(index)));
+    }
+
+    public static void commandDeleteItem(List<Task> items, String input) {
+        int index = Integer.parseInt(input.substring(7)) - 1;
+        Task item = items.remove(index);
+        StringBuilder sb = new StringBuilder();
+        sb.append("  Noted. I've removed this task:\n");
+        sb.append("    " + item.toString() + "\n");
+        sb.append("  Now you have " + items.size() + " tasks in the list.");
+        printConsoleMessage(sb.toString());
     }
 
     public static void commandAddItem(List<Task> items, String input) throws OliviaException {

@@ -70,6 +70,20 @@
   Now you have 7 tasks in the list.
   ------------------------------------
   ------------------------------------
+  Noted. I've removed this task:
+    [T][ ] borrow book
+  Now you have 6 tasks in the list.
+  ------------------------------------
+  ------------------------------------
+  Here are the tasks in your list:
+  1. [T][X] read book
+  2. [D][ ] return book (by: June 6th)
+  3. [E][ ] project meeting (from: Aug 6th 2pm to 4pm)
+  4. [T][X] join sports club
+  5. [D][ ] return book (by: Sunday)
+  6. [E][ ] project meeting (from: Mon 2pm to 4pm)
+  ------------------------------------
+  ------------------------------------
   Oh No!!! Invalid todo format. Use 'todo <description>'
   ------------------------------------
   ------------------------------------
