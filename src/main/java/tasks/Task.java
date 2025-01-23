@@ -1,8 +1,11 @@
-public class Task {
+package tasks;
+public abstract class Task {
+    private String type;
     private String description;
     private boolean isDone;
 
-    public Task(String description) {
+    public Task(String type, String description) {
+        this.type = type;
         this.description = description;
         this.isDone = false;
     }
@@ -27,8 +30,12 @@ public class Task {
         return description;
     }
 
+    public String getType() {
+        return type;
+    }
+
     @Override
     public String toString() {
-        return "[" + getStatusIcon() + "] " + description;
+        return "[" + getType() +"][" + getStatusIcon() + "] " + description;
     }
 }
