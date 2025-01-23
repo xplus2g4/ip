@@ -19,13 +19,21 @@ public class Olivia {
 
         Scanner sc = new Scanner(System.in);
         String input = sc.nextLine();
-        List<String> items = new ArrayList<>();
+        List<Task> items = new ArrayList<>();
         while (!input.equals("bye")) {
             if (input.equals("list")) {
-                printConsoleMessage(listItems(items));
+                printConsoleMessage(getItemsString(items));
+            } else if (input.startsWith("mark")) {
+                int index = Integer.parseInt(input.substring(5)) - 1;
+                items.get(index).markAsDone();
+                printConsoleMessage(getMarkedString(items.get(index)));
+            } else if (input.startsWith("unmark")) {
+                int index = Integer.parseInt(input.substring(7)) - 1;
+                items.get(index).markAsUndone();
+                printConsoleMessage(getMarkedString(items.get(index)));
             } else {
-                items.add(input);
-                printConsoleMessage("added: " + input);
+                items.add(new Task(input));
+                printConsoleMessage("  added: " + input);
             }
             input = sc.nextLine();
         }
@@ -35,16 +43,28 @@ public class Olivia {
 
     private static void printConsoleMessage(String message) {
         System.out.println("  ------------------------------------");
-        System.out.println("  " + message);
+        System.out.println(message);
         System.out.println("  ------------------------------------");
     }
 
-    public static String listItems(List<String> items) {
+    public static String getItemsString(List<Task> items) {
         StringBuilder sb = new StringBuilder();
+        sb.append("  Here are the tasks in your list:\n");
         for (int i = 0; i < items.size(); i++) {
             sb.append("  " + (i + 1) + ". " + items.get(i) + "\n");
         }
         sb.deleteCharAt(sb.length() - 1);
+        return sb.toString();
+    }
+
+    public static String getMarkedString(Task item) {
+        StringBuilder sb = new StringBuilder();
+        if (item.isDone()) {
+            sb.append("  Nice! I've marked this task as done:\n");
+        } else {
+            sb.append("  OK, I've marked this task as not done yet:\n");
+        }
+        sb.append("    " + item.toString());
         return sb.toString();
     }
 }
