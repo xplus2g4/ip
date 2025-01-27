@@ -1,24 +1,21 @@
-public enum Command {
-    BYE,
-    LIST,
-    MARK,
-    UNMARK,
-    DELETE,
-    ADD;
+package olivia;
 
-    public static Command fromString(String input) throws OliviaException {
+import olivia.commands.*;
+
+public class Parser {
+    public static Command parse(String input) throws OliviaException {
         if (input.equals("bye")) {
-            return BYE;
+            return new ExitCommand(input);
         } else if (input.equals("list")) {
-            return LIST;
+            return new ListCommand(input);
         } else if (input.startsWith("mark")) {
-            return MARK;
+            return new MarkCommand(input);
         } else if (input.startsWith("unmark")) {
-            return UNMARK;
+            return new UnmarkCommand(input);
         } else if (input.startsWith("delete")) {
-            return DELETE;
+            return new DeleteCommand(input);
         } else if (input.startsWith("todo") || input.startsWith("deadline") || input.startsWith("event")) {
-            return ADD;
+            return new AddCommand(input);
         }
         throw new OliviaException("I'm sorry, but I don't know what that means :-(");
     }
