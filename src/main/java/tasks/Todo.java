@@ -21,4 +21,9 @@ public class Todo extends Task {
     public Todo(String description) {
         super("T", description);
     }
+
+    @Override
+    public String toCsvString() {
+        return "T|" + (isDone() ? "1" : "0") + "|" + getDescription();
+    }
 }

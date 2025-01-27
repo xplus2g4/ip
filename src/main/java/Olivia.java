@@ -1,3 +1,4 @@
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -5,7 +6,14 @@ import java.util.Scanner;
 
 import tasks.*;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.util.stream.Collectors;
+
 public class Olivia {
+    private static final Path path = Path.of("data", "olivia.csv");
+
     public static void main(String[] args) {
         String logo = " ________  ___       ___  ___      ___ ___  ________     \n" + //
                         "|\\   __  \\|\\  \\     |\\  \\|\\  \\    /  /|\\  \\|\\   __  \\    \n" + //
@@ -21,7 +29,7 @@ public class Olivia {
         System.out.println("  ------------------------------------");
 
         Scanner sc = new Scanner(System.in);
-        List<Task> items = new ArrayList<>();
+        List<Task> items = readData();
         String input;
 
         loop: do {
@@ -47,6 +55,7 @@ public class Olivia {
                         commandAddItem(items, input);
                         break;
                 }
+                writeData(items);
             } catch (OliviaException e) {
                 printConsoleMessage("  " + e.getMessage());
             }
@@ -129,5 +138,53 @@ public class Olivia {
         }
         sb.append("    " + item.toString());
         return sb.toString();
+    }
+
+    private static List<Task> readData() {
+        try {
+            File file = path.toFile();
+            if (!file.exists()) {
+                return new ArrayList<>();
+            }
+            return Files.lines(path).map(Olivia::fromString).collect(Collectors.toList());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    private static void writeData(List<Task> items) {
+        try {
+            if (!path.toFile().exists()) {
+                Files.createDirectories(path.getParent());
+                Files.createFile(path);
+            }
+            Files.write(path, items.stream().map(Task::toCsvString).collect(Collectors.toList()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static Task fromString(String input) {
+        String[] parts = input.split("\\|");
+        String type = parts[0];
+        boolean isDone = parts[1].equals("1");
+        String description = parts[2];
+        Task task = null;
+        switch (type) {
+            case "T":
+                task = new Todo(description);
+                break;
+            case "D":
+                task = new Deadline(description, parts[3]);
+                break;
+            case "E":
+                task = new Event(description, parts[3], parts[4]);
+                break;
+        }
+        if (isDone) {
+            task.markAsDone();
+        }
+        return task;
     }
 }

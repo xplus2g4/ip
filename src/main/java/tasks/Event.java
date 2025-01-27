@@ -33,4 +33,9 @@ public class Event extends Task {
     public String toString() {
         return super.toString() + " (" + getDuration() + ")";
     }
+
+    @Override
+    public String toCsvString() {
+        return "E|" + (isDone() ? "1" : "0") + "|" + getDescription() + "|" + startTime + "|" + endTime;
+    }
 }
