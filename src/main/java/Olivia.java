@@ -1,4 +1,5 @@
 import java.nio.file.Path;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -176,10 +177,10 @@ public class Olivia {
                 task = new Todo(description);
                 break;
             case "D":
-                task = new Deadline(description, parts[3]);
+                task = new Deadline(description, LocalDateTime.parse(parts[3], Task.formatter));
                 break;
             case "E":
-                task = new Event(description, parts[3], parts[4]);
+                task = new Event(description, LocalDateTime.parse(parts[3], Task.formatter), LocalDateTime.parse(parts[4], Task.formatter));
                 break;
         }
         if (isDone) {
