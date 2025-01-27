@@ -1,8 +1,12 @@
 package tasks;
+
+import java.time.format.DateTimeFormatter;
+
 public abstract class Task {
     private String type;
     private String description;
     private boolean isDone;
+    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public Task(String type, String description) {
         this.type = type;
