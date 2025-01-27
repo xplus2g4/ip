@@ -1,12 +1,9 @@
+package olivia;
 import java.nio.file.Path;
 import java.util.ArrayList;
 
-import olivia.OliviaException;
-import olivia.Parser;
-import olivia.Storage;
-import olivia.Ui;
 import olivia.commands.Command;
-import olivia.tasks.*;
+import olivia.tasks.TaskList;
 
 public class Olivia {
     private Ui ui;
