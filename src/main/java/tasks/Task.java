@@ -38,4 +38,6 @@ public abstract class Task {
     public String toString() {
         return "[" + getType() +"][" + getStatusIcon() + "] " + description;
     }
+
+    abstract public String toCsvString();
 }

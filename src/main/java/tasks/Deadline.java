@@ -32,4 +32,9 @@ public class Deadline extends Task {
     public String toString() {
         return super.toString() + " (by: " + deadline + ")";
     }
+
+    @Override
+    public String toCsvString() {
+        return "D|" + (isDone() ? "1" : "0") + "|" + getDescription() + "|" + deadline;
+    }
 }
