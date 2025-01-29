@@ -1,4 +1,5 @@
 package olivia;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -86,7 +87,8 @@ public class Storage {
                 task = new Deadline(description, LocalDateTime.parse(parts[3], Task.formatter));
                 break;
             case "E":
-                task = new Event(description, LocalDateTime.parse(parts[3], Task.formatter), LocalDateTime.parse(parts[4], Task.formatter));
+                task = new Event(description, LocalDateTime.parse(parts[3], Task.formatter),
+                        LocalDateTime.parse(parts[4], Task.formatter));
                 break;
         }
         if (isDone) {

@@ -16,10 +16,9 @@ public class Event extends Task {
         Pattern pattern = Pattern.compile("event (.+) /from (.+) /to (.+)");
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
-            return Optional.of(
-                    new Event(matcher.group(1),
-                            LocalDateTime.parse(matcher.group(2), Task.formatter),
-                            LocalDateTime.parse(matcher.group(3), Task.formatter)));
+            return Optional.of(new Event(matcher.group(1),
+                    LocalDateTime.parse(matcher.group(2), Task.formatter),
+                    LocalDateTime.parse(matcher.group(3), Task.formatter)));
         }
         throw new IllegalArgumentException(
                 "Invalid event format. Use 'event <description> /from <dd/MM/yyyy HH:mm> /to <dd/MM/yyyy HH:mm>'");
@@ -42,6 +41,7 @@ public class Event extends Task {
 
     @Override
     public String toCsvString() {
-        return "E|" + (isDone() ? "1" : "0") + "|" + getDescription() + "|" + startTime.format(formatter) + "|" + endTime.format(formatter);
+        return "E|" + (isDone() ? "1" : "0") + "|" + getDescription() + "|"
+                + startTime.format(formatter) + "|" + endTime.format(formatter);
     }
 }

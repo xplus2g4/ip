@@ -24,7 +24,8 @@ public class Parser {
             return new UnmarkCommand(input);
         } else if (input.startsWith("delete")) {
             return new DeleteCommand(input);
-        } else if (input.startsWith("todo") || input.startsWith("deadline") || input.startsWith("event")) {
+        } else if (input.startsWith("todo") || input.startsWith("deadline")
+                || input.startsWith("event")) {
             return new AddCommand(input);
         }
         throw new OliviaException("I'm sorry, but I don't know what that means :-(");

@@ -6,7 +6,7 @@ import olivia.Ui;
 import olivia.tasks.Task;
 import olivia.tasks.TaskList;
 
-public class DeleteCommand extends Command{
+public class DeleteCommand extends Command {
     public DeleteCommand(String rawCommand) {
         super(rawCommand);
     }
