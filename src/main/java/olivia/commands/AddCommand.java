@@ -24,7 +24,8 @@ public class AddCommand extends Command {
         } catch (IllegalArgumentException e) {
             throw new OliviaException(e.getMessage());
         } catch (DateTimeParseException e) {
-            throw new OliviaException("Please enter a valid date and time in the format: dd/MM/yyyy HH:mm");
+            throw new OliviaException(
+                    "Please enter a valid date and time in the format: dd/MM/yyyy HH:mm");
         }
     }
 

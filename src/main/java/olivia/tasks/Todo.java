@@ -5,7 +5,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Todo extends Task {
-    public static Optional<Todo> isTodo (String input) {
+    public static Optional<Todo> isTodo(String input) {
         if (!input.startsWith("todo")) {
             return Optional.empty();
         }

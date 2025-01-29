@@ -6,7 +6,8 @@ public abstract class Task {
     private String type;
     private String description;
     private boolean isDone;
-    public static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    public static final DateTimeFormatter formatter =
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     public Task(String type, String description) {
         this.type = type;
@@ -40,7 +41,7 @@ public abstract class Task {
 
     @Override
     public String toString() {
-        return "[" + getType() +"][" + getStatusIcon() + "] " + description;
+        return "[" + getType() + "][" + getStatusIcon() + "] " + description;
     }
 
     abstract public String toCsvString();
