@@ -75,6 +75,21 @@ public class Ui {
     }
 
     /**
+     * Shows the task list.
+     *
+     * @param tasks The task list to show.
+     */
+    public void showFoundTasks(TaskList tasks) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("  Here are the matching tasks in your list:\n");
+        for (int i = 0; i < tasks.getSize(); i++) {
+            sb.append("  " + (i + 1) + ". " + tasks.getTask(i) + "\n");
+        }
+
+        this.out.print(sb.toString());
+    }
+
+    /**
      * Shows the task list with a message.
      *
      * @param task The task item to show as marked.
