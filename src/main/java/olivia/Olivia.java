@@ -41,7 +41,7 @@ public class Olivia {
     }
 
     public static void main(String[] args) {
-        Path path = Path.of("data", "olivia.csv");
+        Path path = java.nio.file.Paths.get("data", "olivia.csv");
         Olivia olivia = new Olivia(path);
         olivia.run();
     }
