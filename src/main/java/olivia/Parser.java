@@ -2,7 +2,17 @@ package olivia;
 
 import olivia.commands.*;
 
+/**
+ * Represents a parser to parse user input.
+ */
 public class Parser {
+    /**
+     * Parses the user input and returns the corresponding command.
+     *
+     * @param input The user input.
+     * @return The corresponding command.
+     * @throws OliviaException If the user input is invalid.
+     */
     public static Command parse(String input) throws OliviaException {
         if (input.equals("bye")) {
             return new ExitCommand(input);

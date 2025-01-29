@@ -13,13 +13,27 @@ import olivia.tasks.Task;
 import olivia.tasks.TaskList;
 import olivia.tasks.Todo;
 
+/**
+ * Represents a storage class to read and write tasks to a file.
+ */
 public class Storage {
     private Path filePath;
 
+    /**
+     * Constructs a storage class.
+     *
+     * @param filePath The path to the file to store tasks.
+     */
     public Storage(Path filePath) {
         this.filePath = filePath;
     }
 
+    /**
+     * Reads tasks from the file.
+     *
+     * @return The list of tasks read from the file.
+     * @throws OliviaException If there is an error reading data from the file.
+     */
     public List<Task> readTasks() throws OliviaException {
         try {
             File file = this.filePath.toFile();
@@ -33,6 +47,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Saves tasks to the file.
+     *
+     * @param tasks The list of tasks to save.
+     * @throws OliviaException If there is an error writing data to the file.
+     */
     public void saveTasks(TaskList tasks) throws OliviaException {
         try {
             if (!this.filePath.toFile().exists()) {
@@ -46,6 +66,12 @@ public class Storage {
         }
     }
 
+    /**
+     * Converts a string to a task.
+     *
+     * @param input The string to convert.
+     * @return The task converted from the string.
+     */
     public static Task fromString(String input) {
         String[] parts = input.split("\\|");
         String type = parts[0];
