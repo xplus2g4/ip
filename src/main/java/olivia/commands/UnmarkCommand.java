@@ -6,6 +6,9 @@ import olivia.Ui;
 import olivia.tasks.Task;
 import olivia.tasks.TaskList;
 
+/**
+ * Represents a command to mark a task as undone in the task list.
+ */
 public class UnmarkCommand extends Command {
     public UnmarkCommand(String rawCommand) {
         super(rawCommand);

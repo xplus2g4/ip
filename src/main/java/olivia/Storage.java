@@ -80,16 +80,18 @@ public class Storage {
         String description = parts[2];
         Task task = null;
         switch (type) {
-            case "T":
-                task = new Todo(description);
-                break;
-            case "D":
-                task = new Deadline(description, LocalDateTime.parse(parts[3], Task.formatter));
-                break;
-            case "E":
-                task = new Event(description, LocalDateTime.parse(parts[3], Task.formatter),
-                        LocalDateTime.parse(parts[4], Task.formatter));
-                break;
+        case "T":
+            task = new Todo(description);
+            break;
+        case "D":
+            task = new Deadline(description, LocalDateTime.parse(parts[3], Task.FORMATTER));
+            break;
+        case "E":
+            task = new Event(description, LocalDateTime.parse(parts[3], Task.FORMATTER),
+                    LocalDateTime.parse(parts[4], Task.FORMATTER));
+            break;
+        default:
+            throw new OliviaException("Invalid task type in file");
         }
         if (isDone) {
             task.markAsDone();

@@ -6,12 +6,11 @@ import java.time.format.DateTimeFormatter;
  * Represents a task.
  */
 public abstract class Task {
+    public static final DateTimeFormatter FORMATTER =
+            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     private String type;
     private String description;
     private boolean isDone;
-
-    public static final DateTimeFormatter formatter =
-            DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     /**
      * Constructs a task.
@@ -85,5 +84,5 @@ public abstract class Task {
      *
      * @return The task in CSV format.
      */
-    abstract public String toCsvString();
+    public abstract String toCsvString();
 }

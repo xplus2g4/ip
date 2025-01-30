@@ -9,7 +9,7 @@ import olivia.tasks.TaskList;
  * Represents a command that can be executed by Olivia.
  */
 public abstract class Command {
-    String rawCommand;
+    protected String rawCommand;
 
     /**
      * Constructs a command.

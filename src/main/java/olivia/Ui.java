@@ -36,15 +36,15 @@ public class Ui {
      * Shows the welcome message.
      */
     public void showWelcome() {
-        String logo = " ________  ___       ___  ___      ___ ___  ________     \n" + //
-                "|\\   __  \\|\\  \\     |\\  \\|\\  \\    /  /|\\  \\|\\   __  \\    \n" + //
-                "\\ \\  \\|\\  \\ \\  \\    \\ \\  \\ \\  \\  /  / | \\  \\ \\  \\|\\  \\   \n" + //
-                " \\ \\  \\\\\\  \\ \\  \\    \\ \\  \\ \\  \\/  / / \\ \\  \\ \\   __  \\  \n" + //
-                "  \\ \\  \\\\\\  \\ \\  \\____\\ \\  \\ \\    / /   \\ \\  \\ \\  \\ \\  \\ \n" + //
-                "   \\ \\_______\\ \\_______\\ \\__\\ \\__/ /     \\ \\__\\ \\__\\ \\__\\\n" + //
-                "    \\|_______|\\|_______|\\|__|\\|__|/       \\|__|\\|__|\\|__|\n" + //
-                "                                                         \n" + //
-                "                                                         ";
+        String logo = " ________  ___       ___  ___      ___ ___  ________     \n"
+                + "|\\   __  \\|\\  \\     |\\  \\|\\  \\    /  /|\\  \\|\\   __  \\    \n"
+                + "\\ \\  \\|\\  \\ \\  \\    \\ \\  \\ \\  \\  /  / | \\  \\ \\  \\|\\  \\   \n"
+                + " \\ \\  \\\\\\  \\ \\  \\    \\ \\  \\ \\  \\/  / / \\ \\  \\ \\   __  \\  \n"
+                + "  \\ \\  \\\\\\  \\ \\  \\____\\ \\  \\ \\    / /   \\ \\  \\ \\  \\ \\  \\ \n"
+                + "   \\ \\_______\\ \\_______\\ \\__\\ \\__/ /     \\ \\__\\ \\__\\ \\__\\\n"
+                + "    \\|_______|\\|_______|\\|__|\\|__|/       \\|__|\\|__|\\|__|\n"
+                + "                                                         \n"
+                + "                                                         ";
         this.out.println(logo);
         this.out.println("  Hello! I'm Olivia\n  What can I do for you?");
         this.showLine();
@@ -94,23 +94,23 @@ public class Ui {
      *
      * @param task The task item to show as marked.
      */
-    public void showTaskMarked(Task item) {
+    public void showTaskMarked(Task task) {
         StringBuilder sb = new StringBuilder();
         sb.append("  Nice! I've marked this task as done:\n");
-        sb.append("    " + item.toString());
+        sb.append("    " + task.toString());
 
         this.out.println(sb.toString());
     }
 
     /**
      * Shows the task list with a message.
-     * 
+     *
      * @param task The task item to show as unmarked.
      */
-    public void showTaskUnmarked(Task item) {
+    public void showTaskUnmarked(Task task) {
         StringBuilder sb = new StringBuilder();
         sb.append("  OK, I've marked this task as not done yet:\n");
-        sb.append("    " + item.toString());
+        sb.append("    " + task.toString());
 
         this.out.println(sb.toString());
     }

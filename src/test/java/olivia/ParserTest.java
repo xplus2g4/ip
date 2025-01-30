@@ -1,13 +1,26 @@
 package olivia;
 
-import org.junit.jupiter.api.Test;
-
-import olivia.commands.*;
-
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrowsExactly;
 
+import org.junit.jupiter.api.Test;
+
+import olivia.commands.AddCommand;
+import olivia.commands.DeleteCommand;
+import olivia.commands.ExitCommand;
+import olivia.commands.ListCommand;
+import olivia.commands.MarkCommand;
+import olivia.commands.UnmarkCommand;
+
+/**
+ * Represents a parser test.
+ */
 public class ParserTest {
+    /**
+     * Tests the parse method in the Parser class.
+     *
+     * @throws OliviaException If the user input is invalid.
+     */
     @Test
     public void parseCommandTest() throws OliviaException {
         assertInstanceOf(ExitCommand.class, Parser.parse("bye"));

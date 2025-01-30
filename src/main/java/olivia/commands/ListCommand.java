@@ -4,6 +4,9 @@ import olivia.Storage;
 import olivia.Ui;
 import olivia.tasks.TaskList;
 
+/**
+ * Represents a command to list all tasks in the task list.
+ */
 public class ListCommand extends Command {
     public ListCommand(String rawCommand) {
         super(rawCommand);

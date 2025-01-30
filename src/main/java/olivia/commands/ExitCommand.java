@@ -5,6 +5,9 @@ import olivia.Storage;
 import olivia.Ui;
 import olivia.tasks.TaskList;
 
+/**
+ * Represents a command to exit the Olivia chatbot.
+ */
 public class ExitCommand extends Command {
     public ExitCommand(String rawCommand) {
         super(rawCommand);
