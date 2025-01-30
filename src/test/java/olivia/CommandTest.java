@@ -13,7 +13,7 @@ public class CommandTest {
      */
     @Test
     public void exitCommandTest() {
-        ExitCommand exitCommand = new ExitCommand("bye");
+        ExitCommand exitCommand = new ExitCommand();
         assert exitCommand.isExit();
     }
 }

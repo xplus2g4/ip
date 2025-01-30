@@ -2,20 +2,15 @@ package olivia.commands;
 
 
 import olivia.Storage;
-import olivia.Ui;
 import olivia.tasks.TaskList;
 
 /**
  * Represents a command to exit the Olivia chatbot.
  */
 public class ExitCommand extends Command {
-    public ExitCommand(String rawCommand) {
-        super(rawCommand);
-    }
-
     @Override
-    public void execute(TaskList tasks, Storage storage, Ui ui) {
-        ui.showGoodbye();
+    public void execute(TaskList tasks, Storage storage) {
+        // Do nothing
     }
 
     @Override

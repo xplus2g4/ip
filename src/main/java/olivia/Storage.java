@@ -84,11 +84,11 @@ public class Storage {
             task = new Todo(description);
             break;
         case "D":
-            task = new Deadline(description, LocalDateTime.parse(parts[3], Task.FORMATTER));
+            task = new Deadline(description, LocalDateTime.parse(parts[3], Task.WRITE_FORMATTER));
             break;
         case "E":
-            task = new Event(description, LocalDateTime.parse(parts[3], Task.FORMATTER),
-                    LocalDateTime.parse(parts[4], Task.FORMATTER));
+            task = new Event(description, LocalDateTime.parse(parts[3], Task.WRITE_FORMATTER),
+                    LocalDateTime.parse(parts[4], Task.WRITE_FORMATTER));
             break;
         default:
             throw new OliviaException("Invalid task type in file");

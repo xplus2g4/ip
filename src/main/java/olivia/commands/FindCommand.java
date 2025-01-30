@@ -1,22 +1,21 @@
 package olivia.commands;
 
 import olivia.Storage;
-import olivia.Ui;
 import olivia.tasks.TaskList;
 
 /**
  * Represents a command to find tasks in the task list.
  */
 public class FindCommand extends Command {
-    public FindCommand(String rawCommand) {
-        super(rawCommand);
+    private String keyword;
+
+    public FindCommand(String keyword) {
+        this.keyword = keyword;
     }
 
     @Override
-    public void execute(TaskList tasks, Storage storage, Ui ui) {
-        String keyword = rawCommand.substring(5);
-        TaskList matchingTasks = tasks.findTasks(keyword);
-        ui.showFoundTasks(matchingTasks);
+    public void execute(TaskList tasks, Storage storage) {
+        tasks.findTasks(keyword);
     }
 
     @Override

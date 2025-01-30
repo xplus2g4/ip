@@ -1,13 +1,17 @@
 package olivia.tasks;
 
 import java.time.format.DateTimeFormatter;
+import java.util.UUID;
 
 /**
  * Represents a task.
  */
-public abstract class Task {
-    public static final DateTimeFormatter FORMATTER =
+public abstract class Task implements Comparable<Task> {
+    public static final DateTimeFormatter WRITE_FORMATTER =
             DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
+    public static final DateTimeFormatter VIEW_FORMATTER =
+            DateTimeFormatter.ofPattern("dd MMM yyyy");
+    private UUID id;
     private String type;
     private String description;
     private boolean isDone;
@@ -19,6 +23,7 @@ public abstract class Task {
      * @param description The description of the task.
      */
     public Task(String type, String description) {
+        this.id = UUID.randomUUID();
         this.type = type;
         this.description = description;
         this.isDone = false;
@@ -77,6 +82,20 @@ public abstract class Task {
     @Override
     public String toString() {
         return "[" + getType() + "][" + getStatusIcon() + "] " + description;
+    }
+
+    @Override
+    public int compareTo(Task other) {
+        return this.id.compareTo(other.id);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Task) {
+            Task other = (Task) obj;
+            return this.id.equals(other.id);
+        }
+        return false;
     }
 
     /**

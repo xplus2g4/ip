@@ -40,15 +40,15 @@ public class Event extends Task {
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
             return Optional.of(new Event(matcher.group(1),
-                    LocalDateTime.parse(matcher.group(2), Task.FORMATTER),
-                    LocalDateTime.parse(matcher.group(3), Task.FORMATTER)));
+                    LocalDateTime.parse(matcher.group(2), Task.WRITE_FORMATTER),
+                    LocalDateTime.parse(matcher.group(3), Task.WRITE_FORMATTER)));
         }
         throw new IllegalArgumentException(
                 "Invalid event format. Use 'event <description> /from <dd/MM/yyyy HH:mm> /to <dd/MM/yyyy HH:mm>'");
     }
 
     public String getDuration() {
-        return "from: " + startTime.format(FORMATTER) + " to " + endTime.format(FORMATTER);
+        return "from: " + startTime.format(VIEW_FORMATTER) + " to " + endTime.format(VIEW_FORMATTER);
     }
 
     @Override
@@ -59,6 +59,6 @@ public class Event extends Task {
     @Override
     public String toCsvString() {
         return "E|" + (isDone() ? "1" : "0") + "|" + getDescription() + "|"
-                + startTime.format(FORMATTER) + "|" + endTime.format(FORMATTER);
+                + startTime.format(WRITE_FORMATTER) + "|" + endTime.format(WRITE_FORMATTER);
     }
 }
