@@ -36,7 +36,7 @@ public class Deadline extends Task {
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
             return Optional.of(new Deadline(matcher.group(1),
-                    LocalDateTime.parse(matcher.group(2), Task.FORMATTER)));
+                    LocalDateTime.parse(matcher.group(2), Task.WRITE_FORMATTER)));
         }
         throw new IllegalArgumentException(
                 "Invalid deadline format. Use 'deadline <description> /by <dd/MM/yyyy HH:mm>'");
@@ -44,12 +44,12 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return super.toString() + " (by: " + deadline.format(FORMATTER) + ")";
+        return super.toString() + " (by: " + deadline.format(VIEW_FORMATTER) + ")";
     }
 
     @Override
     public String toCsvString() {
         return "D|" + (isDone() ? "1" : "0") + "|" + getDescription() + "|"
-                + deadline.format(FORMATTER);
+                + deadline.format(WRITE_FORMATTER);
     }
 }
