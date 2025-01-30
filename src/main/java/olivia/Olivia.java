@@ -4,6 +4,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
+
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -31,6 +32,19 @@ public class Olivia extends Application {
     private static final Path PATH = Paths.get("data", "olivia.csv");
     private Storage storage;
     private TaskList taskList;
+
+    /**
+     * Creates a new Olivia chatbot.
+     */
+    public Olivia() {
+        this.storage = new Storage(PATH);
+
+        try {
+            this.taskList = new TaskList(storage.readTasks());
+        } catch (OliviaException e) {
+            taskList = new TaskList(new ArrayList<>());
+        }
+    }
 
     @Override
     public void start(Stage primaryStage) {
@@ -135,16 +149,5 @@ public class Olivia extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Todo List");
         primaryStage.show();
-    }
-
-
-    public Olivia() {
-        this.storage = new Storage(PATH);
-
-        try {
-            this.taskList = new TaskList(storage.readTasks());
-        } catch (OliviaException e) {
-            taskList = new TaskList(new ArrayList<>());
-        }
     }
 }

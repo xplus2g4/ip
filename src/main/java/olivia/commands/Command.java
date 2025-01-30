@@ -13,7 +13,6 @@ public abstract class Command {
      *
      * @param tasks The list of tasks.
      * @param storage The storage to store tasks.
-     * @param ui The user interface.
      * @throws OliviaException If an error occurs during execution.
      */
     public abstract void execute(TaskList tasks, Storage storage) throws OliviaException;

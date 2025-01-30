@@ -2,6 +2,7 @@ package olivia.tasks;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
@@ -79,6 +80,11 @@ public class TaskList {
         tasks.remove(index);
     }
 
+    /**
+     * Removes the specified task.
+     *
+     * @param task The task to remove.
+     */
     public void removeTask(Task task) {
         tasksView.getItems().remove(task);
         tasks.remove(task);
@@ -126,7 +132,6 @@ public class TaskList {
      * Finds tasks that contain the keyword.
      *
      * @param keyword The keyword to search for.
-     * @return The list of tasks that contain the keyword.
      */
     public void findTasks(String keyword) {
         tasksView.getItems().clear();
