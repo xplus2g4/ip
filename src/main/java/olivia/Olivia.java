@@ -1,7 +1,5 @@
 package olivia;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.time.LocalDate;
 import java.util.ArrayList;
 
@@ -29,7 +27,7 @@ import olivia.tasks.Todo;
  * Represents the main Olivia chatbot class.
  */
 public class Olivia extends Application {
-    private static final Path PATH = Paths.get("data", "olivia.csv");
+    private static final String[] PATH = {"data", "olivia.csv"};
     private Storage storage;
     private TaskList taskList;
 

@@ -3,6 +3,7 @@ package olivia;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,8 +26,8 @@ public class Storage {
      *
      * @param filePath The path to the file to store tasks.
      */
-    public Storage(Path filePath) {
-        this.filePath = filePath;
+    public Storage(String... filePath) {
+        this.filePath = Paths.get("", filePath);
     }
 
     /**
