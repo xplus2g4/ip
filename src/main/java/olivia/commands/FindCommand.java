@@ -4,6 +4,9 @@ import olivia.Storage;
 import olivia.Ui;
 import olivia.tasks.TaskList;
 
+/**
+ * Represents a command to find tasks in the task list.
+ */
 public class FindCommand extends Command {
     public FindCommand(String rawCommand) {
         super(rawCommand);

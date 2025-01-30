@@ -6,8 +6,15 @@ import java.util.Optional;
 import olivia.OliviaException;
 import olivia.Storage;
 import olivia.Ui;
-import olivia.tasks.*;
+import olivia.tasks.Deadline;
+import olivia.tasks.Event;
+import olivia.tasks.Task;
+import olivia.tasks.TaskList;
+import olivia.tasks.Todo;
 
+/**
+ * Represents a command to mark a task as done in the task list.
+ */
 public class AddCommand extends Command {
     public AddCommand(String rawCommand) {
         super(rawCommand);

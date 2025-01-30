@@ -6,6 +6,9 @@ import olivia.Ui;
 import olivia.tasks.Task;
 import olivia.tasks.TaskList;
 
+/**
+ * Represents a command to delete a task from the task list.
+ */
 public class DeleteCommand extends Command {
     public DeleteCommand(String rawCommand) {
         super(rawCommand);

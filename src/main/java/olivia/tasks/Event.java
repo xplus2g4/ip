@@ -5,10 +5,33 @@ import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * Represents an event task in the task list.
+ */
 public class Event extends Task {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
 
+
+    /**
+     * Constructs an event.
+     *
+     * @param description The description of the event.
+     * @param startTime The start time of the event.
+     * @param endTime The end time of the event.
+     */
+    public Event(String description, LocalDateTime startTime, LocalDateTime endTime) {
+        super("E", description);
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
+
+    /**
+     * Parses the input to check if it is a valid event.
+     *
+     * @param input The input to be parsed.
+     * @return An optional containing the event if the input is valid, empty otherwise.
+     */
     public static Optional<Event> isEvent(String input) {
         if (!input.startsWith("event")) {
             return Optional.empty();
@@ -17,21 +40,15 @@ public class Event extends Task {
         Matcher matcher = pattern.matcher(input);
         if (matcher.find()) {
             return Optional.of(new Event(matcher.group(1),
-                    LocalDateTime.parse(matcher.group(2), Task.formatter),
-                    LocalDateTime.parse(matcher.group(3), Task.formatter)));
+                    LocalDateTime.parse(matcher.group(2), Task.FORMATTER),
+                    LocalDateTime.parse(matcher.group(3), Task.FORMATTER)));
         }
         throw new IllegalArgumentException(
                 "Invalid event format. Use 'event <description> /from <dd/MM/yyyy HH:mm> /to <dd/MM/yyyy HH:mm>'");
     }
 
-    public Event(String description, LocalDateTime startTime, LocalDateTime endTime) {
-        super("E", description);
-        this.startTime = startTime;
-        this.endTime = endTime;
-    }
-
     public String getDuration() {
-        return "from: " + startTime.format(formatter) + " to " + endTime.format(formatter);
+        return "from: " + startTime.format(FORMATTER) + " to " + endTime.format(FORMATTER);
     }
 
     @Override
@@ -42,6 +59,6 @@ public class Event extends Task {
     @Override
     public String toCsvString() {
         return "E|" + (isDone() ? "1" : "0") + "|" + getDescription() + "|"
-                + startTime.format(formatter) + "|" + endTime.format(formatter);
+                + startTime.format(FORMATTER) + "|" + endTime.format(FORMATTER);
     }
 }

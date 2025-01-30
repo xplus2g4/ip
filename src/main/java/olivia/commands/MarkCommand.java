@@ -6,6 +6,9 @@ import olivia.Ui;
 import olivia.tasks.Task;
 import olivia.tasks.TaskList;
 
+/**
+ * Represents a command to mark a task as done in the task list.
+ */
 public class MarkCommand extends Command {
     public MarkCommand(String rawCommand) {
         super(rawCommand);
