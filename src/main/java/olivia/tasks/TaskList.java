@@ -7,7 +7,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.HBox;
-import javafx.util.Callback;
 
 /**
  * Represents a list of tasks.
@@ -15,6 +14,26 @@ import javafx.util.Callback;
 public class TaskList {
     private ListView<Task> tasksView;
     private List<Task> tasks;
+
+    static class TaskCell extends ListCell<Task> {
+        @Override
+        public void updateItem(Task task, boolean empty) {
+            super.updateItem(task, empty);
+            if (empty || task == null) {
+                setText(null);
+                setGraphic(null);
+                return;
+            }
+
+            HBox cellLayout = new HBox(10);
+            Label taskLabel = new Label(task.toString());
+            if (task.isDone()) {
+                taskLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+            }
+            cellLayout.getChildren().add(taskLabel);
+            setGraphic(cellLayout);
+        }
+    }
 
     /**
      * Constructs a task list.
@@ -26,29 +45,7 @@ public class TaskList {
         this.tasksView = new ListView<>();
         this.tasksView.getItems().addAll(tasks);
 
-        this.tasksView.setCellFactory(new Callback<ListView<Task>, ListCell<Task>>() {
-            @Override
-            public ListCell<Task> call(ListView<Task> listView) {
-                return new ListCell<Task>() {
-                    @Override
-                    protected void updateItem(Task task, boolean empty) {
-                        super.updateItem(task, empty);
-                        if (empty || task == null) {
-                            setText(null);
-                            setGraphic(null);
-                        } else {
-                            HBox cellLayout = new HBox(10);
-                            Label taskLabel = new Label(task.toString());
-                            if (task.isDone()) {
-                                taskLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
-                            }
-                            cellLayout.getChildren().add(taskLabel);
-                            setGraphic(cellLayout);
-                        }
-                    }
-                };
-            }
-        });
+        this.tasksView.setCellFactory(param -> new TaskCell());
     }
 
     /**
