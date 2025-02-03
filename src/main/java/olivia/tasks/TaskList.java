@@ -132,10 +132,7 @@ public class TaskList {
      */
     public void findTasks(String keyword) {
         tasksView.getItems().clear();
-        for (Task task : tasks) {
-            if (task.getDescription().contains(keyword)) {
-                tasksView.getItems().add(task);
-            }
-        }
+        tasks.stream().filter(task -> task.getDescription().contains(keyword))
+                .forEach(tasksView.getItems()::add);
     }
 }
