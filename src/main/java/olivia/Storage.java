@@ -76,6 +76,8 @@ public class Storage {
      */
     public static Task fromString(String input) {
         String[] parts = input.split("\\|");
+        assert parts.length >= 3 : "Invalid task format";
+
         String type = parts[0];
         boolean isDone = parts[1].equals("1");
         String description = parts[2];
