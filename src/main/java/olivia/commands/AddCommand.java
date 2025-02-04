@@ -22,7 +22,6 @@ public class AddCommand extends Command {
         try {
             tasks.addTask(this.task);
             storage.saveTasks(tasks);
-            storage.saveTasks(tasks);
         } catch (IllegalArgumentException e) {
             throw new OliviaException(e.getMessage());
         } catch (DateTimeParseException e) {

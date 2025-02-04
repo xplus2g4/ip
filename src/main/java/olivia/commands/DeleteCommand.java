@@ -19,6 +19,7 @@ public class DeleteCommand extends Command {
     public void execute(TaskList tasks, Storage storage) throws OliviaException {
         try {
             tasks.removeTask(task);
+            storage.saveTasks(tasks);
         } catch (NumberFormatException e) {
             throw new OliviaException("The task number provided is invalid.");
         } catch (IndexOutOfBoundsException e) {
