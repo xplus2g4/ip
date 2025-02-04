@@ -6,14 +6,19 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-import olivia.tasks.Deadline;
-import olivia.tasks.Event;
+import olivia.tasks.DeadlineBuilder;
+import olivia.tasks.EventBuilder;
 import olivia.tasks.Task;
+import olivia.tasks.TaskBuilder;
 import olivia.tasks.TaskList;
-import olivia.tasks.Todo;
+import olivia.tasks.TodoBuilder;
 
 /**
  * Represents a storage class to read and write tasks to a file.
@@ -42,7 +47,11 @@ public class Storage {
             if (!file.exists()) {
                 return new ArrayList<>();
             }
-            return Files.lines(this.filePath).map(Storage::fromString).collect(Collectors.toList());
+            Map<UUID, Task> taskMap = new HashMap<>();
+
+            return Files.lines(this.filePath)
+                .map(line -> fromString(taskMap, line))
+                .collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
             throw new OliviaException("Error reading data from file");
@@ -74,31 +83,41 @@ public class Storage {
      * @param input The string to convert.
      * @return The task converted from the string.
      */
-    public static Task fromString(String input) {
+    public static Task fromString(Map<UUID, Task> loadedTasks, String input) {
         String[] parts = input.split("\\|");
-        assert parts.length >= 3 : "Invalid task format";
+        assert parts.length >= 4 : "Invalid task format";
 
-        String type = parts[0];
-        boolean isDone = parts[1].equals("1");
-        String description = parts[2];
-        Task task = null;
+        UUID id = UUID.fromString(parts[0]);
+        String type = parts[1];
+        boolean isDone = parts[2].equals("1");
+        String description = parts[3];
+        String previousTaskId = parts[4];
+        Optional<Task> previousTask = Optional.empty();
+        if (!previousTaskId.equals("null")) {
+            Task task = loadedTasks.get(UUID.fromString(previousTaskId));
+            assert task != null : "Invalid previous task ID";
+            previousTask = Optional.of(task);
+        }
+        TaskBuilder taskBuilder = null;
         switch (type) {
         case "T":
-            task = new Todo(description);
+            taskBuilder = new TodoBuilder(description);
             break;
         case "D":
-            task = new Deadline(description, LocalDateTime.parse(parts[3], Task.WRITE_FORMATTER));
+            LocalDateTime deadline = LocalDateTime.parse(parts[5], Task.WRITE_FORMATTER);
+            taskBuilder = new DeadlineBuilder(description, deadline);
             break;
         case "E":
-            task = new Event(description, LocalDateTime.parse(parts[3], Task.WRITE_FORMATTER),
-                    LocalDateTime.parse(parts[4], Task.WRITE_FORMATTER));
+            LocalDateTime startTime = LocalDateTime.parse(parts[5], Task.WRITE_FORMATTER);
+            LocalDateTime endTime = LocalDateTime.parse(parts[6], Task.WRITE_FORMATTER);
+            taskBuilder = new EventBuilder(description, startTime, endTime);
             break;
         default:
             throw new OliviaException("Invalid task type in file");
         }
-        if (isDone) {
-            task.markAsDone();
-        }
+        Task task =
+                taskBuilder.withId(id).withIsDone(isDone).withPreviousTask(previousTask).build();
+        loadedTasks.put(id, task);
         return task;
     }
 }

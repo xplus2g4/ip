@@ -2,6 +2,7 @@ package olivia;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Optional;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
@@ -17,11 +18,13 @@ import olivia.commands.DeleteCommand;
 import olivia.commands.ExitCommand;
 import olivia.commands.MarkCommand;
 import olivia.commands.UnmarkCommand;
-import olivia.tasks.Deadline;
-import olivia.tasks.Event;
+import olivia.tasks.DeadlineBuilder;
+import olivia.tasks.EventBuilder;
 import olivia.tasks.Task;
+import olivia.tasks.TaskBuilder;
 import olivia.tasks.TaskList;
-import olivia.tasks.Todo;
+import olivia.tasks.TodoBuilder;
+import olivia.ui.TaskPicker;
 
 /**
  * Represents the main Olivia chatbot class.
@@ -47,8 +50,11 @@ public class Olivia extends Application {
     @Override
     public void start(Stage primaryStage) {
         ComboBox<String> taskType = new ComboBox<>();
+        TaskPicker taskPicker = new TaskPicker();
+
         taskType.getItems().addAll("Todo", "Deadline", "Event");
         taskType.setValue("Todo");
+        taskPicker.setTasks(taskList.getTasks());
 
         TextField taskInput = new TextField();
         DatePicker deadlinePicker = new DatePicker();
@@ -62,7 +68,7 @@ public class Olivia extends Application {
         Button byeButton = new Button("Bye");
 
         // Layout
-        VBox inputFields = new VBox(10, taskInput);
+        VBox inputFields = new VBox(10, taskPicker.getTaskPicker(), taskInput);
         HBox inputBox = new HBox(10, taskType, inputFields, addButton);
         HBox buttonBox = new HBox(10, markDoneButton, markUndoneButton, deleteButton, byeButton);
         VBox layout = new VBox(10, taskList.getTasksView(), inputBox, buttonBox);
@@ -71,7 +77,7 @@ public class Olivia extends Application {
         // Event Handlers
         taskType.setOnAction(e -> {
             inputFields.getChildren().clear();
-            inputFields.getChildren().add(taskInput);
+            inputFields.getChildren().addAll(taskInput, taskPicker.getTaskPicker());
             if (taskType.getValue().equals("Deadline")) {
                 inputFields.getChildren().add(deadlinePicker);
             } else if (taskType.getValue().equals("Event")) {
@@ -82,30 +88,41 @@ public class Olivia extends Application {
         addButton.setOnAction(e -> {
             String taskDescription = taskInput.getText().trim();
             if (!taskDescription.isEmpty()) {
-                AddCommand addCommand = new AddCommand(new Todo(taskDescription));
-                if (taskType.getValue().equals("Deadline")) {
+                Optional<TaskBuilder> taskBuilder = Optional.empty();
+                if (taskType.getValue().equals("Todo")) {
+                    TodoBuilder builder = new TodoBuilder(taskDescription);
+                    taskBuilder = Optional.of(builder);
+                } else if (taskType.getValue().equals("Deadline")) {
                     LocalDate deadline = deadlinePicker.getValue();
                     if (deadline == null) {
                         return;
                     }
-                    addCommand =
-                            new AddCommand(new Deadline(taskDescription, deadline.atStartOfDay()));
+
+                    DeadlineBuilder builder = new DeadlineBuilder(taskDescription, deadline.atStartOfDay());
+                    taskBuilder = Optional.of(builder);
                 } else if (taskType.getValue().equals("Event")) {
                     LocalDate start = eventStartPicker.getValue();
                     LocalDate end = eventEndPicker.getValue();
                     if (start == null || end == null) {
                         return;
                     }
-                    addCommand = new AddCommand(
-                            new Event(taskDescription, start.atStartOfDay(), end.atStartOfDay()));
-                } else if (taskType.getValue().equals("Event")) {
-                    inputFields.getChildren().addAll(eventStartPicker, eventEndPicker);
+
+                    EventBuilder builder = new EventBuilder(taskDescription, start.atStartOfDay(), end.atStartOfDay());
+                    taskBuilder = Optional.of(builder);
                 }
-                addCommand.execute(taskList, storage);
-                taskInput.clear();
-                deadlinePicker.setValue(null);
-                eventStartPicker.setValue(null);
-                eventEndPicker.setValue(null);
+
+                if (taskBuilder.isPresent()) {
+                    Optional<Task> previousTask = taskPicker.getTaskPicker().getValue();
+                    Task task = taskBuilder.get().withPreviousTask(previousTask).build();
+                    AddCommand addCommand = new AddCommand(task);
+
+                    addCommand.execute(taskList, storage);
+                    taskPicker.setTasks(taskList.getTasks());
+                    taskInput.clear();
+                    deadlinePicker.setValue(null);
+                    eventStartPicker.setValue(null);
+                    eventEndPicker.setValue(null);
+                }
             }
         });
 

@@ -1,6 +1,7 @@
 package olivia.tasks;
 
 import java.time.format.DateTimeFormatter;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -11,10 +12,13 @@ public abstract class Task implements Comparable<Task> {
             DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
     public static final DateTimeFormatter VIEW_FORMATTER =
             DateTimeFormatter.ofPattern("dd MMM yyyy");
-    private UUID id;
-    private String type;
-    private String description;
-    private boolean isDone;
+
+    protected String type;
+    protected String description;
+    protected boolean isDone;
+    protected Optional<Task> previousTask = Optional.empty();
+
+    private UUID id = UUID.randomUUID();
 
     /**
      * Constructs a task.
@@ -22,11 +26,12 @@ public abstract class Task implements Comparable<Task> {
      * @param type The type of task.
      * @param description The description of the task.
      */
-    public Task(String type, String description) {
-        this.id = UUID.randomUUID();
+    protected Task(UUID id, String type, String description, Optional<Task> previousTask) {
+        this.id = id;
         this.type = type;
         this.description = description;
         this.isDone = false;
+        this.previousTask = previousTask;
     }
 
     /**
@@ -79,13 +84,45 @@ public abstract class Task implements Comparable<Task> {
         return type;
     }
 
+    public Optional<Task> getPreviousTask() {
+        return previousTask;
+    }
+
+    /**
+     * Returns the UUID of the task.
+     *
+     * @return The UUID of the task.
+     */
+    public String toCsvString() {
+        String output = id + "|" + type + "|" + (isDone ? "1" : "0") + "|" + description;
+        if (previousTask.isPresent()) {
+            return output + "|" + previousTask.get().id;
+        }
+        return output + "|null";
+    }
+
+    public String toMiniString() {
+        return description.toString();
+    }
+
     @Override
     public String toString() {
-        return "[" + getType() + "][" + getStatusIcon() + "] " + description;
+        String output = "[" + getType() + "][" + getStatusIcon() + "] " + description;
+        if (previousTask.isPresent()) {
+            return "(after: " + previousTask.get().toMiniString() + ") " + output;
+        }
+        return output;
     }
 
     @Override
     public int compareTo(Task other) {
+        if (this.previousTask.isPresent() && other.previousTask.isPresent()) {
+            return this.id.compareTo(other.id);
+        } else if (this.previousTask.isPresent()) {
+            return 1;
+        } else if (other.previousTask.isPresent()) {
+            return -1;
+        }
         return this.id.compareTo(other.id);
     }
 
@@ -98,10 +135,5 @@ public abstract class Task implements Comparable<Task> {
         return false;
     }
 
-    /**
-     * Returns the task in CSV format.
-     *
-     * @return The task in CSV format.
-     */
-    public abstract String toCsvString();
+    public abstract Task copy();
 }
