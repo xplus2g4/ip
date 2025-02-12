@@ -49,9 +49,9 @@ public class TaskPicker {
     }
 
     /**
-     * Set the tasks of the task picker.
+     * Sets the tasks to be displayed in the task picker.
      *
-     * @param tasks The list of tasks.
+     * @param tasks The list of tasks to be displayed.
      */
     public void setTasks(List<Task> tasks) {
         this.taskPicker.getItems().clear();
