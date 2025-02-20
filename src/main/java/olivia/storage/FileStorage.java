@@ -1,4 +1,4 @@
-package olivia;
+package olivia.storage;
 
 import java.io.File;
 import java.nio.file.Files;
@@ -6,6 +6,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import olivia.OliviaException;
 import olivia.tasks.DeadlineBuilder;
 import olivia.tasks.EventBuilder;
 import olivia.tasks.Task;
@@ -23,7 +25,7 @@ import olivia.tasks.TodoBuilder;
 /**
  * Represents a storage class to read and write tasks to a file.
  */
-public class Storage {
+public class FileStorage extends Storage {
     private Path filePath;
 
     /**
@@ -31,7 +33,7 @@ public class Storage {
      *
      * @param filePath The path to the file to store tasks.
      */
-    public Storage(String... filePath) {
+    public FileStorage(String... filePath) {
         this.filePath = Paths.get("", filePath);
     }
 
@@ -49,9 +51,8 @@ public class Storage {
             }
             Map<UUID, Task> taskMap = new HashMap<>();
 
-            return Files.lines(this.filePath)
-                .map(line -> fromString(taskMap, line))
-                .collect(Collectors.toList());
+            return Files.lines(this.filePath).map(line -> fromString(taskMap, line))
+                    .collect(Collectors.toList());
         } catch (Exception e) {
             e.printStackTrace();
             throw new OliviaException("Error reading data from file");
@@ -85,7 +86,6 @@ public class Storage {
      */
     public static Task fromString(Map<UUID, Task> loadedTasks, String input) {
         String[] parts = input.split("\\|");
-        assert parts.length >= 4 : "Invalid task format";
 
         UUID id = UUID.fromString(parts[0]);
         String type = parts[1];
@@ -98,26 +98,59 @@ public class Storage {
             assert task != null : "Invalid previous task ID";
             previousTask = Optional.of(task);
         }
-        TaskBuilder taskBuilder = null;
+        String[] otherParts = Arrays.copyOfRange(parts, 5, parts.length);
+
+        TaskBuilder<?> taskBuilder = null;
         switch (type) {
         case "T":
-            taskBuilder = new TodoBuilder(description);
+            taskBuilder = fromTodoString(otherParts);
             break;
         case "D":
-            LocalDateTime deadline = LocalDateTime.parse(parts[5], Task.WRITE_FORMATTER);
-            taskBuilder = new DeadlineBuilder(description, deadline);
+            taskBuilder = fromDeadlineString(otherParts);
             break;
         case "E":
-            LocalDateTime startTime = LocalDateTime.parse(parts[5], Task.WRITE_FORMATTER);
-            LocalDateTime endTime = LocalDateTime.parse(parts[6], Task.WRITE_FORMATTER);
-            taskBuilder = new EventBuilder(description, startTime, endTime);
+            taskBuilder = fromEventString(otherParts);
             break;
         default:
             throw new OliviaException("Invalid task type in file");
         }
-        Task task =
-                taskBuilder.withId(id).withIsDone(isDone).withPreviousTask(previousTask).build();
+        Task task = taskBuilder.withId(id).withDescription(description).withIsDone(isDone)
+                .withPreviousTask(previousTask).build();
         loadedTasks.put(id, task);
         return task;
     }
+
+    /**
+     * Converts a string to a todo builder.
+     *
+     * @param parts The parts of the string to convert.
+     * @return The todo builder converted from the string.
+     */
+    private static TodoBuilder fromTodoString(String... parts) {
+        return new TodoBuilder();
+    }
+
+    /**
+     * Converts a string to a deadline builder.
+     *
+     * @param parts The parts of the string to convert.
+     * @return The deadline builder converted from the string.
+     */
+    private static DeadlineBuilder fromDeadlineString(String... parts) {
+        LocalDateTime deadline = LocalDateTime.parse(parts[0], Task.WRITE_FORMATTER);
+        return new DeadlineBuilder().withDeadline(deadline);
+    }
+
+    /**
+     * Converts a string to an event builder.
+     *
+     * @param parts The parts of the string to convert.
+     * @return The event builder converted from the string.
+     */
+    private static EventBuilder fromEventString(String... parts) {
+        LocalDateTime startTime = LocalDateTime.parse(parts[0], Task.WRITE_FORMATTER);
+        LocalDateTime endTime = LocalDateTime.parse(parts[1], Task.WRITE_FORMATTER);
+        return new EventBuilder().withStartTime(startTime).withEndTime(endTime);
+    }
+
 }

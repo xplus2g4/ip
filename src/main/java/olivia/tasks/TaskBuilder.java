@@ -6,7 +6,7 @@ import java.util.UUID;
 /**
  * Represents a task builder.
  */
-public abstract class TaskBuilder {
+public abstract class TaskBuilder<T extends TaskBuilder<T>> {
     protected String type;
     protected String description;
 
@@ -26,14 +26,44 @@ public abstract class TaskBuilder {
     }
 
     /**
+     * Constructs a task builder.
+     *
+     * @param type The type of task.
+     */
+    public TaskBuilder(String type) {
+        this.type = type;
+    }
+
+    /**
+     * Returns the task builder itself.
+     *
+     * @return The task builder.
+     */
+    @SuppressWarnings("unchecked")
+    protected T self() {
+        return (T) this; // Safe because T is the same type as the class.
+    }
+
+    /**
      * Sets the UUID of the task.
      *
      * @param id The UUID of the task.
      * @return The task builder.
      */
-    public TaskBuilder withId(UUID id) {
+    public T withId(UUID id) {
         this.id = id;
-        return this;
+        return self();
+    }
+
+    /**
+     * Sets the description of the task.
+     *
+     * @param description The description of the task.
+     * @return The task builder.
+     */
+    public T withDescription(String description) {
+        this.description = description;
+        return self();
     }
 
     /**
@@ -42,9 +72,9 @@ public abstract class TaskBuilder {
      * @param isDone The completion status of the task.
      * @return
      */
-    public TaskBuilder withIsDone(boolean isDone) {
+    public T withIsDone(boolean isDone) {
         this.isDone = isDone;
-        return this;
+        return self();
     }
 
     /**
@@ -52,9 +82,9 @@ public abstract class TaskBuilder {
      *
      * @return The task builder.
      */
-    public TaskBuilder markAsDone() {
+    public T markAsDone() {
         this.isDone = true;
-        return this;
+        return self();
     }
 
     /**
@@ -62,9 +92,9 @@ public abstract class TaskBuilder {
      *
      * @return The task builder.
      */
-    public TaskBuilder markAsUndone() {
+    public T markAsUndone() {
         this.isDone = false;
-        return this;
+        return self();
     }
 
     /**
@@ -73,9 +103,9 @@ public abstract class TaskBuilder {
      * @param previousTask The previous task of the task.
      * @return The task builder.
      */
-    public TaskBuilder withPreviousTask(Task previousTask) {
+    public T withPreviousTask(Task previousTask) {
         this.previousTask = Optional.of(previousTask);
-        return this;
+        return self();
     }
 
     /**
@@ -84,9 +114,9 @@ public abstract class TaskBuilder {
      * @param previousTask The previous task of the task.
      * @return The task builder.
      */
-    public TaskBuilder withPreviousTask(Optional<Task> previousTask) {
+    public T withPreviousTask(Optional<Task> previousTask) {
         this.previousTask = previousTask;
-        return this;
+        return self();
     }
 
     public abstract Task build();

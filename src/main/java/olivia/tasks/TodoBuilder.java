@@ -3,7 +3,7 @@ package olivia.tasks;
 /**
  * Represents a todo builder.
  */
-public class TodoBuilder extends TaskBuilder {
+public class TodoBuilder extends TaskBuilder<TodoBuilder> {
     /**
      * Constructs a todo builder.
      *
@@ -11,6 +11,13 @@ public class TodoBuilder extends TaskBuilder {
      */
     public TodoBuilder(String description) {
         super("T", description);
+    }
+
+    /**
+     * Constructs a todo builder.
+     */
+    public TodoBuilder() {
+        super("T");
     }
 
     @Override

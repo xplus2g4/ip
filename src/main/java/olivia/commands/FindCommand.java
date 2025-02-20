@@ -1,6 +1,6 @@
 package olivia.commands;
 
-import olivia.Storage;
+import olivia.storage.Storage;
 import olivia.tasks.TaskList;
 
 /**

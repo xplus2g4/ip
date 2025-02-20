@@ -19,6 +19,8 @@ import olivia.commands.DeleteCommand;
 import olivia.commands.ExitCommand;
 import olivia.commands.MarkCommand;
 import olivia.commands.UnmarkCommand;
+import olivia.storage.FileStorage;
+import olivia.storage.Storage;
 import olivia.tasks.DeadlineBuilder;
 import olivia.tasks.EventBuilder;
 import olivia.tasks.Task;
@@ -39,7 +41,7 @@ public class Olivia extends Application {
      * Creates a new Olivia chatbot.
      */
     public Olivia() {
-        this.storage = new Storage(PATH);
+        this.storage = new FileStorage(PATH);
 
         try {
             this.taskList = new TaskList(storage.readTasks());
@@ -103,7 +105,7 @@ public class Olivia extends Application {
         addButton.setOnAction(e -> {
             String taskDescription = taskInput.getText().trim();
             if (!taskDescription.isEmpty()) {
-                Optional<TaskBuilder> taskBuilder = Optional.empty();
+                Optional<TaskBuilder<?>> taskBuilder = Optional.empty();
                 if (taskType.getValue().equals("Todo")) {
                     TodoBuilder builder = new TodoBuilder(taskDescription);
                     taskBuilder = Optional.of(builder);

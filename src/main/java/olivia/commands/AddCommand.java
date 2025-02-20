@@ -3,7 +3,7 @@ package olivia.commands;
 import java.time.format.DateTimeParseException;
 
 import olivia.OliviaException;
-import olivia.Storage;
+import olivia.storage.Storage;
 import olivia.tasks.Task;
 import olivia.tasks.TaskList;
 

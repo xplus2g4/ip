@@ -24,6 +24,15 @@ public class Deadline extends Task {
         this.deadline = deadline;
     }
 
+    /**
+     * Returns the deadline of the deadline.
+     *
+     * @return The deadline of the deadline.
+     */
+    public LocalDateTime getDeadline() {
+        return deadline;
+    }
+
     @Override
     public String toString() {
         return super.toString() + " (by: " + deadline.format(VIEW_FORMATTER) + ")";

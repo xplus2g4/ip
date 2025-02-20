@@ -1,7 +1,7 @@
 package olivia.commands;
 
 import olivia.OliviaException;
-import olivia.Storage;
+import olivia.storage.Storage;
 import olivia.tasks.TaskList;
 
 /**

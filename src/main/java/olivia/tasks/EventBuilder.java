@@ -5,7 +5,7 @@ import java.time.LocalDateTime;
 /**
  * Represents an event builder.
  */
-public class EventBuilder extends TaskBuilder {
+public class EventBuilder extends TaskBuilder<EventBuilder> {
     private LocalDateTime from;
     private LocalDateTime to;
 
@@ -19,6 +19,35 @@ public class EventBuilder extends TaskBuilder {
         super("E", description);
         this.from = from;
         this.to = to;
+    }
+
+    /**
+     * Constructs an event builder.
+     */
+    public EventBuilder() {
+        super("E");
+    }
+
+    /**
+     * Sets the time of the event.
+     *
+     * @param from The start time of the event.
+     * @return The event builder.
+     */
+    public EventBuilder withStartTime(LocalDateTime from) {
+        this.from = from;
+        return this;
+    }
+
+    /**
+     * Sets the time of the event.
+     *
+     * @param to The end time of the event.
+     * @return The event builder.
+     */
+    public EventBuilder withEndTime(LocalDateTime to) {
+        this.to = to;
+        return this;
     }
 
     @Override
