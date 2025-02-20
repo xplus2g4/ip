@@ -34,7 +34,11 @@ public class Event extends Task {
 
     @Override
     public String toString() {
-        return super.toString() + " (" + getDuration() + ")";
+        String output = "[" + getStatusIcon() + "] Event: " + description;
+        if (previousTask.isPresent()) {
+            output = "(after: " + previousTask.get().toMiniString() + ") " + output;
+        }
+        return output + " (" + getDuration() + ")";
     }
 
     @Override

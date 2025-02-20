@@ -26,4 +26,13 @@ public class Todo extends Task {
         }
         return todo;
     }
+
+    @Override
+    public String toString() {
+        String output = "[" + getStatusIcon() + "] Todo: " + description;
+        if (previousTask.isPresent()) {
+            return "(after: " + previousTask.get().toMiniString() + ") " + output;
+        }
+        return output;
+    }
 }

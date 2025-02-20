@@ -23,10 +23,10 @@ public class AddCommand extends Command {
             tasks.addTask(this.task);
             storage.saveTasks(tasks);
         } catch (IllegalArgumentException e) {
-            throw new OliviaException(e.getMessage());
+            handleCommandError(new OliviaException(e.getMessage()));
         } catch (DateTimeParseException e) {
-            throw new OliviaException(
-                    "Please enter a valid date and time in the format: dd/MM/yyyy HH:mm");
+            handleCommandError(new OliviaException(
+                    "Please enter a valid date and time in the format: dd/MM/yyyy HH:mm"));
         }
     }
 

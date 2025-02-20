@@ -63,7 +63,7 @@ public abstract class Task implements Comparable<Task> {
      * @return The status icon of the task.
      */
     public String getStatusIcon() {
-        return (isDone ? "X" : " "); // mark done task with X
+        return (isDone ? "O" : "X"); // mark done task with X
     }
 
     /**

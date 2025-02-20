@@ -1,5 +1,6 @@
 package olivia.commands;
 
+import javafx.scene.control.Alert;
 import olivia.OliviaException;
 import olivia.storage.Storage;
 import olivia.tasks.TaskList;
@@ -23,4 +24,16 @@ public abstract class Command {
      * @return True if the command is an exit command.
      */
     public abstract boolean isExit();
+
+    /**
+     * Handles an Olivia exception that occurred during command execution.
+     *
+     * @param e The Olivia exception that occurred.
+     */
+    protected void handleCommandError(OliviaException e) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Error");
+        alert.setContentText(e.getMessage());
+        alert.showAndWait();
+    }
 }

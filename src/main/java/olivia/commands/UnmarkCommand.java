@@ -22,9 +22,9 @@ public class UnmarkCommand extends Command {
             tasks.getTasksView().refresh();
             storage.saveTasks(tasks);
         } catch (NumberFormatException e) {
-            throw new OliviaException("The task index must be a number.");
+            handleCommandError(new OliviaException("The task index must be a number."));
         } catch (IndexOutOfBoundsException e) {
-            throw new OliviaException("The task index is out of range.");
+            handleCommandError(new OliviaException("The task index is out of range."));
         }
     }
 

@@ -35,7 +35,11 @@ public class Deadline extends Task {
 
     @Override
     public String toString() {
-        return super.toString() + " (by: " + deadline.format(VIEW_FORMATTER) + ")";
+        String output = "[" + getStatusIcon() + "] Deadline: " + description;
+        if (previousTask.isPresent()) {
+            output = "(after: " + previousTask.get().toMiniString() + ") " + output;
+        }
+        return output + " (by: " + deadline.format(VIEW_FORMATTER) + ")";
     }
 
     @Override

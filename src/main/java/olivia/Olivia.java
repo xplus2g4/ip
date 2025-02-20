@@ -58,7 +58,6 @@ public class Olivia extends Application {
         taskType.setValue("Todo");
         VBox labelledTaskType = new VBox(taskTypeLabel, taskType);
 
-
         TaskPicker taskPicker = new TaskPicker();
         taskPicker.setTasks(taskList.getTasks());
 
@@ -78,15 +77,17 @@ public class Olivia extends Application {
         VBox labelledEventEndPicker = new VBox(eventEndLabel, eventEndPicker);
         HBox eventDatePicker = new HBox(5, labelledEventStartPicker, labelledEventEndPicker);
 
+        Label addButtonLabel = new Label(" ");
         Button addButton = new Button("Add");
+        VBox labelledAddButton = new VBox(addButtonLabel, addButton);
         Button deleteButton = new Button("Delete");
         Button markDoneButton = new Button("Mark Done");
         Button markUndoneButton = new Button("Mark Undone");
         Button byeButton = new Button("Bye");
 
         // Layout
-        VBox inputFields = new VBox(10, labelledTaskInput, taskPicker.getNode());
-        HBox inputBox = new HBox(10, labelledTaskType, inputFields, addButton);
+        VBox inputFields = new VBox(10, labelledTaskInput);
+        HBox inputBox = new HBox(10, labelledTaskType, inputFields, taskPicker.getNode(), labelledAddButton);
         HBox buttonBox = new HBox(10, markDoneButton, markUndoneButton, deleteButton, byeButton);
         VBox layout = new VBox(10, taskList.getTasksView(), inputBox, buttonBox);
         layout.setStyle("-fx-padding: 20; -fx-alignment: center;");
@@ -94,11 +95,11 @@ public class Olivia extends Application {
         // Event Handlers
         taskType.setOnAction(e -> {
             inputFields.getChildren().clear();
-            inputFields.getChildren().addAll(labelledTaskInput, taskPicker.getNode());
+            inputFields.getChildren().add(labelledTaskInput);
             if (taskType.getValue().equals("Deadline")) {
                 inputFields.getChildren().add(labelledDeadlinePicker);
             } else if (taskType.getValue().equals("Event")) {
-                inputFields.getChildren().addAll(eventDatePicker);
+                inputFields.getChildren().add(eventDatePicker);
             }
         });
 
@@ -151,6 +152,7 @@ public class Olivia extends Application {
                 Task task = taskList.getTaskInView(selectedIndex);
                 DeleteCommand deleteCommand = new DeleteCommand(task);
                 deleteCommand.execute(taskList, storage);
+                taskPicker.setTasks(taskList.getTasks());
             }
         });
 
@@ -179,7 +181,7 @@ public class Olivia extends Application {
         });
 
         // Scene Setup
-        Scene scene = new Scene(layout, 700, 500);
+        Scene scene = new Scene(layout, 750, 300);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Todo List");
         primaryStage.show();
