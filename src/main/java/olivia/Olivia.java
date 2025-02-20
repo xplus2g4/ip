@@ -9,6 +9,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -49,17 +50,31 @@ public class Olivia extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+        Label taskTypeLabel = new Label("Task Type: ");
         ComboBox<String> taskType = new ComboBox<>();
-        TaskPicker taskPicker = new TaskPicker();
-
         taskType.getItems().addAll("Todo", "Deadline", "Event");
         taskType.setValue("Todo");
+        VBox labelledTaskType = new VBox(taskTypeLabel, taskType);
+
+
+        TaskPicker taskPicker = new TaskPicker();
         taskPicker.setTasks(taskList.getTasks());
 
+        Label taskLabel = new Label("Description: ");
         TextField taskInput = new TextField();
+        VBox labelledTaskInput = new VBox(taskLabel, taskInput);
+
+        Label deadlineLabel = new Label("By: ");
         DatePicker deadlinePicker = new DatePicker();
+        VBox labelledDeadlinePicker = new VBox(deadlineLabel, deadlinePicker);
+
+        Label eventStartLabel = new Label("Start: ");
+        Label eventEndLabel = new Label("End: ");
         DatePicker eventStartPicker = new DatePicker();
         DatePicker eventEndPicker = new DatePicker();
+        VBox labelledEventStartPicker = new VBox(eventStartLabel, eventStartPicker);
+        VBox labelledEventEndPicker = new VBox(eventEndLabel, eventEndPicker);
+        HBox eventDatePicker = new HBox(5, labelledEventStartPicker, labelledEventEndPicker);
 
         Button addButton = new Button("Add");
         Button deleteButton = new Button("Delete");
@@ -68,8 +83,8 @@ public class Olivia extends Application {
         Button byeButton = new Button("Bye");
 
         // Layout
-        VBox inputFields = new VBox(10, taskPicker.getTaskPicker(), taskInput);
-        HBox inputBox = new HBox(10, taskType, inputFields, addButton);
+        VBox inputFields = new VBox(10, labelledTaskInput, taskPicker.getNode());
+        HBox inputBox = new HBox(10, labelledTaskType, inputFields, addButton);
         HBox buttonBox = new HBox(10, markDoneButton, markUndoneButton, deleteButton, byeButton);
         VBox layout = new VBox(10, taskList.getTasksView(), inputBox, buttonBox);
         layout.setStyle("-fx-padding: 20; -fx-alignment: center;");
@@ -77,11 +92,11 @@ public class Olivia extends Application {
         // Event Handlers
         taskType.setOnAction(e -> {
             inputFields.getChildren().clear();
-            inputFields.getChildren().addAll(taskInput, taskPicker.getTaskPicker());
+            inputFields.getChildren().addAll(labelledTaskInput, taskPicker.getNode());
             if (taskType.getValue().equals("Deadline")) {
-                inputFields.getChildren().add(deadlinePicker);
+                inputFields.getChildren().add(labelledDeadlinePicker);
             } else if (taskType.getValue().equals("Event")) {
-                inputFields.getChildren().addAll(eventStartPicker, eventEndPicker);
+                inputFields.getChildren().addAll(eventDatePicker);
             }
         });
 
@@ -98,7 +113,8 @@ public class Olivia extends Application {
                         return;
                     }
 
-                    DeadlineBuilder builder = new DeadlineBuilder(taskDescription, deadline.atStartOfDay());
+                    DeadlineBuilder builder =
+                            new DeadlineBuilder(taskDescription, deadline.atStartOfDay());
                     taskBuilder = Optional.of(builder);
                 } else if (taskType.getValue().equals("Event")) {
                     LocalDate start = eventStartPicker.getValue();
@@ -107,7 +123,8 @@ public class Olivia extends Application {
                         return;
                     }
 
-                    EventBuilder builder = new EventBuilder(taskDescription, start.atStartOfDay(), end.atStartOfDay());
+                    EventBuilder builder = new EventBuilder(taskDescription, start.atStartOfDay(),
+                            end.atStartOfDay());
                     taskBuilder = Optional.of(builder);
                 }
 
@@ -160,7 +177,7 @@ public class Olivia extends Application {
         });
 
         // Scene Setup
-        Scene scene = new Scene(layout, 400, 300);
+        Scene scene = new Scene(layout, 700, 500);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Todo List");
         primaryStage.show();

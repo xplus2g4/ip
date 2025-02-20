@@ -5,7 +5,10 @@ import java.util.Optional;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
 import javafx.util.StringConverter;
 import olivia.tasks.Task;
 
@@ -16,6 +19,7 @@ import olivia.tasks.Task;
  */
 public class TaskPicker {
     private ComboBox<Optional<Task>> taskPicker;
+    private Node node;
 
     static class TaskCell extends StringConverter<Optional<Task>> {
         @Override
@@ -35,6 +39,9 @@ public class TaskPicker {
      */
     public TaskPicker() {
         this.taskPicker = new ComboBox<>();
+        Label taskLabel = new Label("Do after task: ");
+        VBox taskBox = new VBox(taskLabel, taskPicker);
+        this.node = taskBox;
 
         this.taskPicker.setConverter(new TaskCell());
     }
@@ -46,6 +53,15 @@ public class TaskPicker {
      */
     public ComboBox<Optional<Task>> getTaskPicker() {
         return taskPicker;
+    }
+
+    /**
+     * Returns the layout node of the task picker.
+     *
+     * @return The layout node of the task picker.
+     */
+    public Node getNode() {
+        return node;
     }
 
     /**
